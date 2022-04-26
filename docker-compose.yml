@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+   craiglist_db:
+      image: postgres:14.2-alpine
+      container_name: craiglist_db
+      restart: always
+      volumes:
+        - ./data:/var/lib/postgressql/data
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: craiglist_db
+      ports:
+        - 5432:5432
+       
+   
+   craiglist_adminer:
+      image: adminer
+      depends_on: 
+        - craiglist_db
+      restart: always
+      container_name: craiglist_adminer
+      ports:
+        - 8080:8080
+
+volumes:
+  data:
