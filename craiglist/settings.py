@@ -16,8 +16,14 @@ import os
 
 # Set the project base directory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 env = environ.Env()
-environ.Env.read_env()
+base = environ.Path(__file__) - 2
+env_file = base('.env')
+
+if os.path.exists(env_file):
+    env.read_env(env_file=env_file)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
