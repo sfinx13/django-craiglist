@@ -8,4 +8,4 @@ ENV PYTHONUNBUFFERED=1
 RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev python3-dev
 WORKDIR /app
 COPY . .
-RUN pwd && ls -al && pip install -r requirements.txt
+RUN pip install -r requirements.txt
