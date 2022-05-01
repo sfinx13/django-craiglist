@@ -15,7 +15,7 @@ services:
        
    craiglist_adminer:
       image: adminer
-      depends_on: 
+      depends_on:
         - craiglist_db
       restart: always
       container_name: craiglist_adminer
@@ -27,13 +27,15 @@ services:
         context: .
         dockerfile: .docker/python/Dockerfile
       container_name: craiglist_web
-      working_dir: /app
+      working_dir: /home/app/web
       command: python manage.py runserver 0.0.0.0:8000
       volumes:
-        - .:/app/
+        - .:/home/app/web/
       ports:
         - 8000:8000
       environment:
+        DEBUG: ${DEBUG}
+        SECRET_KEY: ${SECRET_KEY}
         POSTGRES_HOST: craiglist_db
         POSTGRES_NAME: ${POSTGRES_DB}
         POSTGRES_USER: ${POSTGRES_USER}

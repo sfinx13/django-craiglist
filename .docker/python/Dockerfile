@@ -1,11 +1,20 @@
 #syntax=docker/dockerfile:1
 
 FROM python:3.9-slim-bullseye
-# Python won’t try to write .pyc files on the import of source modules
+
+RUN mkdir -p /home/app
+RUN addgroup --system app && adduser --system --group app
+
 ENV PYTHONDONTWRITEBYTECODE=1
-# Force the stdout and stderr streams to be unbuffered
 ENV PYTHONUNBUFFERED=1
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/web
+
 RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev python3-dev
-WORKDIR /app
-COPY . .
-RUN pip install -r requirements.txt
+
+WORKDIR $APP_HOME
+COPY . $APP_HOME
+RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN chown -R app:app $APP_HOME
+
+USER app
