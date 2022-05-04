@@ -70,18 +70,17 @@ jobs:
         docker push ${{ env.NGINX_IMAGE }}
   
   deploy:
-    name: Deploy to DigitalOcean
+    name: Deploy to production
     runs-on: ubuntu-latest
     needs: build
     steps:
-    - name: Checkout master
+    - name: Checkout main
       uses: actions/checkout@v1
       
     - name: Add environment variables to .env
       run: |
         echo DEBUG=0 >> .env
         echo SQL_ENGINE=django.db.backends.postgresql >> .env
-        echo DATABASE=postgres >> .env
         echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
         echo SQL_DATABASE=${{ secrets.SQL_DATABASE }} >> .env
         echo SQL_USER=${{ secrets.SQL_USER }} >> .env
@@ -108,6 +107,7 @@ jobs:
       run: |
         scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose-prod.yml root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/app
         ssh -o StrictHostKeyChecking=no root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} << 'ENDSSH'
+          mkdir -p /app
           cd /app
           source .env
           docker login ghcr.io -u $GH_USERNAME -p $GH_PERSONAL_ACCESS_TOKEN
