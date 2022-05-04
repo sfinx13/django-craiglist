@@ -28,7 +28,7 @@ jobs:
         # echo POSTGRES_USER=${{ secrets.SQL_USER }} >> .env
         # echo POSTGRES_PASSWORD=${{ secrets.SQL_PASSWORD }} >> .env
         # echo POSTGRES_HOST=${{ secrets.SQL_HOST }} >> .env
-        # echo POSTGRES_PORT=${{ secrets.SQL_PORT }} >> .env
+        echo POSTGRES_PORT=${{ secrets.SQL_PORT }} >> .env
   
     - name: Set up Python version
       uses: actions/setup-python@v3
