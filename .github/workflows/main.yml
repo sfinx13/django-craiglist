@@ -13,7 +13,7 @@ env:
 jobs:
 
   build:
-    name: Build Docker images
+    name: Build docker images
     runs-on: ubuntu-latest
 
     steps:
@@ -107,7 +107,6 @@ jobs:
       run: |
         scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose-prod.yml root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/app
         ssh -o StrictHostKeyChecking=no root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} << 'ENDSSH'
-          mkdir -p /app
           cd /app
           source .env
           docker login ghcr.io -u $GH_USERNAME -p $GH_PERSONAL_ACCESS_TOKEN
