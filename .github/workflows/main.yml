@@ -48,8 +48,8 @@ jobs:
       
     - name: Set environnement variables
       run: |
-        echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}})" >> $GITHUB_ENV
-        echo "NGINX_IMAGE=$(echo ${{env.NGINX_IMAGE}})" >> $GITHUB_ENV
+        echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
+        echo "NGINX_IMAGE=$(echo ${{env.NGINX_IMAGE}} )" >> $GITHUB_ENV
   
     - name: Log in to GitHub Packages
       run: echo ${GH_PERSONAL_ACCESS_TOKEN} | docker login ghcr.io -u ${{ secrets.GH_USERNAME }} --password-stdin
