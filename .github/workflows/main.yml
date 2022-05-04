@@ -78,6 +78,7 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@v1
+      
       - name: Add environment variables to .env
         run: |
           echo DEBUG=0 >> .env
@@ -93,6 +94,7 @@ jobs:
           echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env
           echo GH_USERNAME=${{ secrets.GH_USERNAME }} >> .env
           echo GH_PERSONAL_ACCESS_TOKEN=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} >> .env
+      
       - name: Add the private SSH key to the ssh-agent
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -101,6 +103,7 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan ${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} >> ~/.ssh/known_hosts
           ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+      
       - name: Build and deploy images on DigitalOcean
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
