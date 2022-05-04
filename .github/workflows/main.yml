@@ -29,7 +29,8 @@ jobs:
         echo POSTGRES_PASSWORD=${{ secrets.SQL_PASSWORD }} >> .env
         echo POSTGRES_HOST=${{ secrets.SQL_HOST }} >> .env
         echo POSTGRES_PORT=${{ secrets.SQL_PORT }} >> .env
-  
+        echo HOST_IP=${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} >> .env
+    
     - name: Set up Python version
       uses: actions/setup-python@v3
       with:
@@ -91,6 +92,7 @@ jobs:
         echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env
         echo GH_USERNAME=${{ secrets.GH_USERNAME }} >> .env
         echo GH_PERSONAL_ACCESS_TOKEN=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} >> .env
+        echo HOST_IP=${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} >> .env
       
     - name: Add the private SSH key to the ssh-agent
       env:
