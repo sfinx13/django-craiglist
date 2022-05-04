@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  craiglist_web:
+    image: "${WEB_IMAGE}"
+    command: gunicorn craiglist.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/usr/src/app/static
+      - media_volume:/usr/src/app/media
+    ports:
+      - 8000:8000
+    env_file: .env
+  
+  craigist_nginx:
+    image: "${NGINX_IMAGE}"
+    volumes:
+      - static_volume:/usr/src/app/static
+      - media_volume:/usr/src/app/media
+    ports:
+      - 80:80
+    depends_on:
+      - craiglist_web
+
+volumes:
+  static_volume:
+  media_volume:

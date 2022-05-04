@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  craiglist_web:
+    build:
+      context: .
+      dockerfile: .docker/python/Dockerfile.prod
+      cache_from:
+        - "${WEB_IMAGE}"
+    image: "${WEB_IMAGE}"
+    command: gunicorn craiglist.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/usr/src/app/static
+      - media_volume:/usr/src/app/media
+    expose:
+      - 8000
+    env_file: .env
+
+  craiglist_nginx:
+    build:
+      context: .
+      dockerfile: .docker/nginx/Dockerfile
+      cache_from:
+        - "${NGINX_IMAGE}"
+    image: "${NGINX_IMAGE}"
+    volumes:
+      - static_volume:/usr/src/app/static
+      - media_volume:/usr/src/app/media
+    ports:
+      - 80:80
+    depends_on:
+      - craiglist_web
+
+volumes:
+  static_volume:
+  media_volume:
