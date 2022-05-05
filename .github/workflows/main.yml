@@ -115,6 +115,6 @@ jobs:
           docker pull $WEB_IMAGE
           docker pull $NGINX_IMAGE
           docker-compose -f docker-compose-prod.yml up -d
-          docker-compose -f docker-compose-prod.yml exec -ti craiglist_web python manage.py migrate
-          docker-compose -f docker-compose-prod.yml exec -ti craiglist_web python manage.py collectstatic --no-input
+          docker-compose -f docker-compose-prod.yml exec -T craiglist_web python manage.py migrate
+          docker-compose -f docker-compose-prod.yml exec -T craiglist_web python manage.py collectstatic --no-input
         ENDSSH
