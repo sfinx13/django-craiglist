@@ -117,4 +117,5 @@ jobs:
           docker-compose -f docker-compose-prod.yml up -d
           docker-compose -f docker-compose-prod.yml exec -T craiglist_web python manage.py migrate
           docker-compose -f docker-compose-prod.yml exec -T craiglist_web python manage.py collectstatic --no-input
+          docker-compose -f docker-compose-prod.yml exec -T craiglist_web cp -a /app/static/. /usr/src/app/static/
         ENDSSH
