@@ -11,9 +11,8 @@ env:
   NGINX_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/craiglist_nginx
 
 jobs:
-
-  build:
-    name: Build docker images
+  test:
+    name: Run tests
     runs-on: ubuntu-latest
 
     steps:
@@ -47,6 +46,25 @@ jobs:
     - name: Run Tests
       run: python manage.py test
       
+  build:
+    name: Build docker images
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - name: Checkout code source
+      uses: actions/checkout@v3
+      
+    - name: Add environment variables to .env
+      run: | 
+        echo DEBUG=0 >> .env
+        echo POSTGRES_DB=${{ secrets.SQL_DATABASE }} >> .env
+        echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+        echo POSTGRES_USER=${{ secrets.SQL_USER }} >> .env
+        echo POSTGRES_PASSWORD=${{ secrets.SQL_PASSWORD }} >> .env
+        echo POSTGRES_HOST=${{ secrets.SQL_HOST }} >> .env
+        echo POSTGRES_PORT=${{ secrets.SQL_PORT }} >> .env
+        echo HOST_IP=${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} >> .env
+          
     - name: Set environnement variables
       run: |
         echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
@@ -63,6 +81,7 @@ jobs:
         docker pull ${{ env.NGINX_IMAGE }} || true
       
     - name: Build images
+      if: ${{ !env.ACT }}
       run: docker-compose -f docker-compose-ci.yml build
       
     - name: Push images
@@ -95,6 +114,7 @@ jobs:
         echo HOST_IP=${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} >> .env
       
     - name: Add the private SSH key to the ssh-agent
+      if: ${{ !env.ACT }}
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
@@ -104,6 +124,7 @@ jobs:
         ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
       
     - name: Build and deploy images on DigitalOcean
+      if: ${{ !env.ACT }}
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
