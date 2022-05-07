@@ -28,7 +28,7 @@ services:
         dockerfile: .docker/python/Dockerfile
       container_name: craiglist_web
       working_dir: /home/app/web
-      command: python manage.py runserver 0.0.0.0:8000
+      command: python manage.py runserver 0.0.0.0:8000 && python manage.py migrate
       volumes:
         - .:/home/app/web/
       ports:
