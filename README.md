@@ -1,3 +1,5 @@
+![Craiglist app CI/CD](https://github.com/sfinx13/django-craiglist/actions/workflows/main.yml/badge.svg)
+
 # Craigslist Redesign - Django and deployed to digital ocean
 
 The objective is to integrate the design proposed by Rabih Shasha with django framework
