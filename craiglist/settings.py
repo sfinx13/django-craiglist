@@ -12,9 +12,12 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import environ
 import os
+from pathlib import Path
 
 # Set the project base directory
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 env = environ.Env()
 base = environ.Path(__file__) - 2
@@ -37,8 +40,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 if '' != env('HOST_IP'):
     ALLOWED_HOSTS.append(env('HOST_IP'))
-else:
-    print('nothing')
 
 # Application definition
 
@@ -67,7 +68,9 @@ ROOT_URLCONF = 'craiglist.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR.joinpath('templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,7 +137,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 MEDIA_URL = 'media/'
@@ -144,3 +147,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+if '' != env('HOST_IP'):
+    STATICFILES_DIRS.append('/usr/src/app/static/')
