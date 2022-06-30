@@ -24,25 +24,25 @@ setup: ## : Install dependencies
 	@bash -c -l '[[ "$(VIRTUAL_ENV)" == *"$(VENV)"* ]] && pip install -r requirements.txt || echo "Please create virtual environnement"'
 
 build: ## : Restart containers
-	@bash -l -c 'docker-compose build'
+	@bash -l -c 'docker compose build'
 
 up: ## : Start containers
-	@bash -l -c 'docker-compose up -d'
+	@bash -l -c 'docker compose up -d'
 
 down: ## : Shutdown containers
-	@bash -l -c 'docker-compose down'
+	@bash -l -c 'docker compose down'
 
 restart: ## : Restart containers
-	@bash -l -c 'docker-compose restart'
+	@bash -l -c 'docker compose restart'
 
 app_db: ## : Login inside database container
-	@bash -l -c 'docker-compose exec craiglist_db sh'
+	@bash -l -c 'docker compose exec craiglist_db sh'
 
 app_web: ## :  Login inside web container
-	@bash -l -c 'docker-compose exec craiglist_web sh'
+	@bash -l -c 'docker compose exec craiglist_web sh'
 
 runserver: ## : Run django server
-	@bash -l -c 'docker-compose stop craiglist_web && python manage.py runserver'
+	@bash -l -c 'docker compose stop craiglist_web && python manage.py runserver'
 
 migration: ## : Make migrations
 	@bash -l -c 'python manage.py makemigrations'

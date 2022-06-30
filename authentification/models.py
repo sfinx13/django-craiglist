@@ -12,12 +12,8 @@ class User(AbstractUser):
         (SUBSCRIBER, 'Subscriber')
     )
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
-
-
     email = models.fields.EmailField(unique=True)
-    username = None
+    username = models.fields.CharField(unique=True, null=True, max_length=128)
     profile_picture = models.ImageField(null=True)
     role = models.CharField(max_length=16, choices=ROLE_CHOICES)
     created_at = models.fields.DateTimeField(auto_now_add=True)
